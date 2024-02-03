@@ -1,4 +1,4 @@
-FROM php:7.3-fpm
+FROM php:8.1-fpm
 
 RUN apt-get update && apt-get install -y \
         libzip-dev \
@@ -17,8 +17,11 @@ RUN apt-get update && apt-get install -y \
         nano \
         postgresql-client \
         nodejs \
-    && pecl install -o -f redis \
-    && pecl install mcrypt-1.0.2 \
+        npm \
+        yarn \
+    #&& pecl install -o -f redis \
+    && pecl install mcrypt \
+    && pecl install xdebug-3.2.0  \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install -j$(nproc) soap \
     && docker-php-ext-install -j$(nproc) intl \
@@ -26,12 +29,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) pgsql \
     && docker-php-ext-install -j$(nproc) pdo_pgsql \
     && docker-php-ext-install -j$(nproc) exif \
-    && docker-php-ext-enable redis \
+#    && docker-php-ext-enable redis \
     && docker-php-ext-enable mcrypt \
-    && docker-php-ext-configure gd \
-        --with-freetype-dir=/usr/include/ \
-        --with-jpeg-dir=/usr/include/ \
-        --with-xpm-dir=/usr/lib/x86_64-linux-gnu/
+    && docker-php-ext-configure gd
 
 # Install composer and add its bin to the PATH.
 RUN curl -s http://getcomposer.org/installer | php && \

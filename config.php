@@ -84,5 +84,5 @@ if (APPLICATION_ENV == 'production') {
     define('DB_CONFIG_HOST', 'postgresql');
     define('DB_CONFIG_USER', 'postgres');
     define('DB_CONFIG_PASS', 'postgres');
-    define('DB_CONFIG_NAME', 'your-database');
+    define('DB_CONFIG_NAME', 'test');
 }

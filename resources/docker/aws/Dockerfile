@@ -1,13 +1,11 @@
-FROM amazonlinux
+FROM nginx:latest
 
 ENV container docker
 
-RUN yum update -y \
-    && amazon-linux-extras install nginx1.12 -y
+COPY default.conf /etc/nginx/conf.d
 
-COPY localhost.conf /etc/nginx/conf.d
-
-EXPOSE 8080
+EXPOSE 80
+EXPOSE 443
 
 STOPSIGNAL SIGTERM
 

@@ -9,7 +9,6 @@
             "name": "Jspreadsheet", "email": "contact@jspreadsheet.com" }
     ],
     "require": {
-        "bossanova/bossanova" : "dev-master",
-        "jspreadsheet/db": "dev-main"
+        "bossanova/bossanova" : "dev-master"
     }
 }

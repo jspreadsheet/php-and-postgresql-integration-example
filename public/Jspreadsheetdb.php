@@ -48,10 +48,10 @@ class Jspreadsheetdb
         // Parse the posted json
         $request = json_decode($post['data'], true);
 
-        // Process the setValue request
-        if (isset($request['setValue']) && $request['setValue']) {
+        // Process the updateData request
+        if (isset($request['updateData']) && $request['updateData']) {
             // Process all records
-            foreach ($request['setValue'] as $v) {
+            foreach ($request['updateData'] as $v) {
                 // Verify if the record exists in the table
                 $result = $this->database->table($this->table)
                     ->argument(1, $this->primaryKey, $v['id'])
@@ -74,11 +74,11 @@ class Jspreadsheetdb
                 'success' => 1,
                 'message' => 'Updated',
             ];
-        } else if (isset($request['insertRow']) && $request['insertRow']) {
-            // No, create a new record
-            $this->database->column($v['data'], true)
-                ->insert()
-                ->execute();
+        } else {
+            return [
+                'success' => 1,
+                'message' => 'This action is not yet being persisted',
+            ];
         }
     }
 
@@ -89,9 +89,8 @@ class Jspreadsheetdb
             'columns' => [],
             'data' => [],
             'persistence' => '/',
-            'defaultColWidth' => '100px',
-            'tableOverflow' => true,
-            'tableWidth' => '1200px'
+            'defaultColWidth' => '200px',
+            'minDimensions' => [3, 10]
         ], $options);
 
         // Get all column information
@@ -119,6 +118,7 @@ class Jspreadsheetdb
                     $column['primaryKey'] = true;
                     $column['readOnly'] = true;
                     $column['type'] = 'number';
+                    $column['width'] = '80px';
                 }
 
                 $config['columns'][] = $column;
@@ -132,11 +132,11 @@ class Jspreadsheetdb
                 $options['id'] = 'j' . rand(1000,9000);
             }
 
-            // Create the Jexcel configuration
+            // Create the Jspreadsheet configuration
             return "<div id='{$options['id']}'></div><script>jspreadsheet(document.getElementById('{$options['id']}'), { worksheets: [$config] });</script>";
         } else {
             // Table not found
-            return 'Not found';
+            return 'Table not found';
         }
     }
 
